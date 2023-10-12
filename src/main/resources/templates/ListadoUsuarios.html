@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+    <body layout:fragment="body">
+        <!--    Desplegar una tabla con la información de Listado de usuarios-->
+        <div class="container">
+            <h1>Lista de Usuarios</h1>
+            <form th:action="@{/usuario/listado}" method="post"  th:object="${usuariobusqueda}" >
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-bounding-box"></i></span>
+                            <input type="text" class="form-control" placeholder="Nombre"  id="txtnombre" name="nombre" th:field="*{nombre}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-bounding-box"></i></span>
+                            <input type="text" class="form-control" placeholder="Apellido Paterno"  id="txtapellidopaterno" name="apellidopaterno" th:field="*{apellidopaterno}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-bounding-box"></i></span>
+                            <input type="text" class="form-control" placeholder="Apellido Materno" id="txtapellidomaterno" name="apellidomaterno" th:field="*{apellidomaterno}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info  ">Buscar <i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <a th:href="@{/usuario/form/{idusuario}(idusuario=0)}" class="col-md-12 btn btn-success grid gap-3"  >Agregar</a>
+            </div>
+            </br>
+
+            <table id="MiTabla" class="table">
+                <thead class= "table table-success table-striped">
+                    <tr>
+                        <th scope="col">Eliminar</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido Paterno</th>
+                        <th scope="col">Apellido Materno</th>
+                        <th scope="col">Fecha de Nacimiento</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">UserName</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Celular</th>
+                        <th scope="col">CURP</th>
+                        <th scope="col">Estatus</th>
+                        <th scope="col">Actualizar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td>
+
+                            <a th:href="@{/usuario/eliminar/{idusuario}(idusuario=${usuario.idusuario})}" class="btn btn-danger">
+                                <i class="bi bi-trash3"></i>
+                        </td>
+                        <td>
+                            <img th:if="${usuario.imagen != null and usuario.imagen != ''}" th:src="'data:image/png;base64,' + ${usuario.imagen}" alt="Imagen Usuario" width="50" heigth="50" />
+                            <img th:unless="${usuario.imagen != null and usuario.imagen != ''}" src="/imagen/UsuarioLogo.png" style="max-width: 100%; max-height: 80px;" alt="Imagen por defecto" />
+                        </td>
+                        <td th:text="${usuario.nombre}"></td>
+                        <td th:text="${usuario.apellidopaterno}"></td>
+                        <td th:text="${usuario.apellidopaterno}"></td>
+                        <td th:text="${usuario.fechanacimiento}"></td>
+                        <td th:text="${usuario.sexo}"></td>
+                        <td th:text="${usuario.username}"></td>
+                        <td th:text="${usuario.email}"></td>
+                        <td th:text="${usuario.password}"></td>
+                        <td th:text="${usuario.telefono}"></td>
+                        <td th:text="${usuario.celular}"></td>
+                        <td th:text="${usuario.curp}"></td>
+                        <td>
+                            <div th:if="${usuario.status== 'N'}" class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" th:id="${usuario.idusuario}" role="switch" onchange="ChangeStatus(this)" >   
+                            </div>
+                            <div th:unless="${usuario.status== 'N'}" class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" th:id="${usuario.idusuario}" role="switch" onchange="ChangeStatus(this)" checked>   
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/usuario/form/{idusuario}(idusuario=${usuario.idusuario})}" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i>                       
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+
+<script>
+    function ChangeStatus(e) {
+        var status = e.checked
+        var idUsuario = e.id
+
+        $.ajax({
+            type: "GET",
+            url: "/usuario/ChangeStatus",
+            datatype: "json",
+            data: {idUsuario: idUsuario, status: status},
+            success: {},
+            error: {
+
+            }
+
+        });
+    }
+
+
+    $(document).ready(function () {
+        $('#MiTabla').DataTable();
+    });
+</script>

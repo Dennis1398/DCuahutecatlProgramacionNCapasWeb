@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+
+    <body layout:fragment="body">
+       <br/>
+        <br/>
+        <form th:action="@{/empresa/formulario}" method="post" th:object="${empresa}" enctype="multipart/form-data">
+
+            <input type="hidden" th:field="*{idempresa}"/>
+                    
+
+            <div class="container">
+                <h3 aling="center">Empresa</h3>  
+                <div class="row" align="center">
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                            <input type="text" class="form-control" placeholder="Nombre de la empresa"  id="nombre" name="nombre" th:field="*{nombre}"/>
+                        </div>
+                        <label id="lblNombre"></label>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
+                            <input type="text" class="form-control" placeholder="Telefono"  id="telefono" name="telefono" th:field="*{telefono}"/>
+                        </div>
+                        <label id="lblTelefono"></label>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <label for="imagenFile">Imagen:</label>
+                            <input type="file" class="form-control" name="imagenFile" id="imagenFile" >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input type="text" class="form-control" placeholder="E-mail"  id="email" name="email" th:field="*{email}"/>
+                        </div>
+                        <label id="lblEmail"></label>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-globe"></i></span>
+                            <input type="text" class="form-control" placeholder="Direccion Web"  id="direccionweb" name="direccionweb" th:field="*{direccionweb}"/>
+                        </div>
+                        <label id="lblDireccionWeb"></label>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <i class="bi bi-file-image-fill"></i>
+                            <div th:if="${imagen != null}">
+                                <img id="vistaPrevia" th:src="'data:text/html;base64,' + ${imagen}" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                            </div>
+                            <div th:unless="${imagen != null}">
+                                <img id="vistaPrevia" src="/Image/AseguradoraLogo.png" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-success col-md-4">GUARDAR <i class="bi bi-floppy2-fill"></i></button>
+            </div>
+        </form>
+
+    </body>
+</html>
+
+<script>
+    function mostrarVistaPrevia(event) {
+        const imagenPrevia = document.getElementById('vistaPrevia');
+
+        const archivo = event.target.files[0];
+
+        const lector = new FileReader();
+
+        lector.onload = function (e) {
+            imagenPrevia.src = e.target.result;
+        };
+
+        lector.readAsDataURL(archivo);
+    }
+</script>

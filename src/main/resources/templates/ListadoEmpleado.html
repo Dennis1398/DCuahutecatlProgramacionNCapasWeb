@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+    <body layout:fragment="body">
+        <div class="container">
+            <h1>Empleados</h1>
+
+
+            <div class="row">
+                <a th:href="@{/empleado/formulario/{idempleado}(idempleado=0)}" class="col-md-12 btn btn-success grid gap-3"  >Agregar</a>
+            </div>
+            </br>
+            <table class="table">
+                <thead class= "table table-success table-striped">
+                    <tr>
+                        <th scope="col">Eliminar</th>
+                        <th scope="col">Numero de Empleado</th>
+                        <th scope="col">RFC</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido Paterno</th>
+                        <th scope="col">Apellido Materno</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Fecha de Nacimiento</th>
+                        <th scope="col">NSS</th>
+                        <th scope="col">Fecha de Ingreso</th>
+                        <th scope="col">Foto</th>                        
+                        <th scope="col">Actualizar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="empleado : ${empleados}">
+                        <td>
+
+                            <a th:href="@{/empleado/eliminar/{idempleado}(idempleado=${empleado.idempleado})}" class="btn btn-danger">
+                                <i class="bi bi-trash3"></i>                           
+                        </td>
+                        <td th:text="${empleado.numeroempleado}"></td>
+                        <td th:text="${empleado.rfc}"></td>
+                        <td th:text="${empleado.nombre}"></td>
+                        <td th:text="${empleado.apellidopaterno}"></td>
+                        <td th:text="${empleado.apellidomaterno}"></td>
+                        <td th:text="${empleado.email}"></td>
+                        <td th:text="${empleado.telefono}"></td>
+                        <td th:text="${empleado.fechanacimiento}"></td>
+                        <td th:text="${empleado.nss}"></td>
+                        <td th:text="${empleado.fechanaingreso}"></td>                        
+                        <td>
+                            <img th:if="${empleado.imagen != null and empleado.imagen != ''}" th:src="'data:image/png;base64,' + ${empleado.imagen}" alt="Imagen Empleado" width="50" heigth="50" />
+                            <img th:unless="${empleado.imagen != null and empleado.imagen != ''}" src="/imagen/UsuarioLogo.png" style="max-width: 100%; max-height: 80px;" alt="Imagen por defecto" />
+                        </td>
+                        <td>
+                            <a th:href="@{/empleado/formulario/{idempleado}(idempleado=${empleado.idempleado})}" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                                
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
